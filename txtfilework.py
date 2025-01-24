@@ -20,16 +20,14 @@ class TxtFileHandler:
         При любой ошибке также возвращаем пустую строку, и выводим сообщение об ошибке.
 
         :param filepath: Путь к файлу, из которого читаем данные.
-        :return: Содержимое файла в виде строки.
+        :return: Содержимое файла в виде строки или "" в случае ошибки.
         """
         try:
             with open(filepath, 'r', encoding='utf-8') as file:
                 return file.read()
         except FileNotFoundError:
-            # Файл не найден — вернём пустую строку
             return ""
         except Exception as e:
-            # Для любых других ошибок выводим сообщение и возвращаем пустую строку
             print(f"Ошибка при чтении файла {filepath}: {e}")
             return ""
 
@@ -42,7 +40,12 @@ class TxtFileHandler:
         :param data: Произвольное количество строк для записи.
         :return: None
         """
-        pass  # Реализация будет добавлена на следующем шаге
+        try:
+            with open(filepath, 'w', encoding='utf-8') as file:
+                for item in data:
+                    file.write(item)
+        except Exception as e:
+            print(f"Ошибка при записи в файл {filepath}: {e}")
 
     def append_file(self, filepath: str, *data: str) -> None:
         """
@@ -53,4 +56,25 @@ class TxtFileHandler:
         :param data: Произвольное количество строк для добавления.
         :return: None
         """
-        pass  # Реализация будет добавлена на следующем шаге
+        try:
+            with open(filepath, 'a', encoding='utf-8') as file:
+                for item in data:
+                    file.write(item)
+        except Exception as e:
+            print(f"Ошибка при добавлении в файл {filepath}: {e}")
+
+
+if __name__ == "__main__":
+    # Пример использования
+    handler = TxtFileHandler()
+
+    # 1. Запись в файл (перезапишет или создаст, если файла нет)
+    handler.write_file("my_file.txt", "This is a test string.\n")
+
+    # 2. Добавление в файл (добавит в конец)
+    handler.append_file("my_file.txt", "This is another string.\n")
+
+    # 3. Чтение из файла
+    content = handler.read_file("my_file.txt")
+    print("Содержимое файла:")
+    print(content)
