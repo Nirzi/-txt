@@ -17,11 +17,21 @@ class TxtFileHandler:
         """
         Читает содержимое файла и возвращает его в виде строки.
         Если файл не найден, метод возвращает пустую строку.
+        При любой ошибке также возвращаем пустую строку, и выводим сообщение об ошибке.
 
         :param filepath: Путь к файлу, из которого читаем данные.
         :return: Содержимое файла в виде строки.
         """
-        pass  # Заглушка: реализация будет добавлена на следующем шаге.
+        try:
+            with open(filepath, 'r', encoding='utf-8') as file:
+                return file.read()
+        except FileNotFoundError:
+            # Файл не найден — вернём пустую строку
+            return ""
+        except Exception as e:
+            # Для любых других ошибок выводим сообщение и возвращаем пустую строку
+            print(f"Ошибка при чтении файла {filepath}: {e}")
+            return ""
 
     def write_file(self, filepath: str, *data: str) -> None:
         """
@@ -32,7 +42,7 @@ class TxtFileHandler:
         :param data: Произвольное количество строк для записи.
         :return: None
         """
-        pass  # Заглушка: реализация будет добавлена позже.
+        pass  # Реализация будет добавлена на следующем шаге
 
     def append_file(self, filepath: str, *data: str) -> None:
         """
@@ -43,4 +53,4 @@ class TxtFileHandler:
         :param data: Произвольное количество строк для добавления.
         :return: None
         """
-        pass  # Заглушка: реализация будет добавлена позже.
+        pass  # Реализация будет добавлена на следующем шаге
